@@ -15,6 +15,7 @@ hooks:
          - touch /var/spool/cron/crontabs/root
          - install -d -m 0755 -g root -o root $LETSENCRYPT_DIR
          - cd /root/acme.sh && LE_WORKING_DIR="${LETSENCRYPT_DIR}" ./acme.sh --install
+         - /bin/bash -c 'if [ "$(stat -c %s /shared/ssl/$$ENV_DISCOURSE_HOSTNAME.cer)" = "0" ]; then echo "Let's Encrypt certificate issuance failed.  Re-run with DEBUG=1 for more info."; exit 1; fi'
 
     - file:
        path: /etc/runit/1.d/letsencrypt
